@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{%block content%} 
+<h1 id="hi"></h1>
+        <h2 id="wait"></h2>
+        <div class="center" id="move-on" style="display: none;">
+            <form action="/gameone/">
+                <input type="submit" value="move on"/>
+            </form>
+        </div>
+        <div id="box1" class="center" style="display: none;">
+            <div style="margin: auto;">
+                <input id="name" type="text" placeholder="enter name"/>
+                <br>
+                <br>
+                <input id="submit" type="submit" value="submit"  onclick="checkName()"/>
+            </div >
+        </div>
+        <br>
+        <div id="box2" style="display: none;" class="center">
+            <span><b>hint:</b></span>
+            <img src="{{url_for('static',filename='images/dick.png')}}" >
+        </div>
+{% endblock %}
+{%block script%} 
+<script>
+    dispalyText(document.getElementById('hi'), "Hi _____");
+    setTimeout(() => {
+        dispalyText(document.getElementById('wait'), "wait, i dont know your name...");
+        setTimeout(() => {
+        document.getElementById('box1').style.display = "inline";
+    }, 3500);
+    }, 900);
+    var tryouts = 0;
+    function checkName(){
+        tryouts ++;
+        const name = document.getElementById('name').value;
+
+        if(tryouts == 3){
+            document.getElementById('box2').style.display = "inline";
+            document.getElementById('box2').style.display = "flex";
+        }
+
+        
+        if (name == "enter name"){
+            document.getElementById('box1').style.display = "none";
+            document.getElementById('box2').style.display = "none";
+            document.getElementById('wait').innerHTML = "";
+            dispalyText(document.getElementById('hi'), "Hi Liel");
+            setTimeout(() => {
+                dispalyText(document.getElementById('wait'), "now i know your name!");
+                setTimeout(() => {
+                const b = document.getElementById('move-on');
+                b.style.display = "inline"
+            }, 2600);
+            }, 800);
+        }
+        
+    }
+    function dispalyText(h, text){
+        h.innerHTML = "";
+        var index = 0;
+        setInterval(() => {
+        h.innerHTML = h.innerHTML + text.charAt(index);
+        index ++;
+    }, 100);
+    }
+</script>
+{% endblock %}

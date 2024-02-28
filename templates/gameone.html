@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+{%block content%} 
+<h1 id="h1"></h1>
+<div id="board" class="border" style="pointer-events: none;">
+    <div class="container">
+        <button id="0" class="button" onclick="playCube(0,'x')"> </button>
+        <button id="1" class="button" onclick="playCube(1,'x')"> </button>
+        <button id="2" class="button" onclick="playCube(2,'x')"> </button>
+    </div>
+    <div class="container">
+        <button id="3" class="button" onclick="playCube(3,'x')"> </button>
+        <button id="4" class="button" onclick="playCube(4,'x')"> </button>
+        <button id="5" class="button" onclick="playCube(5,'x')"> </button>
+    </div>
+    <div class="container">
+        <button id="6" class="button" onclick="playCube(6,'x')"> </button>
+        <button id="7" class="button" onclick="playCube(7,'x')"> </button>
+        <button id="8" class="button" onclick="playCube(8,'x')"> </button>
+    </div>
+</div>
+<div id="situ" class="center" style="display: none;">
+    <h2 id="situ-text"></h2>
+</div>
+<div class="center" id="move-on" style="display: none;">
+    <form action="/gametwo/">
+        <input type="submit" value="move on"/>
+    </form>
+</div>
+{% endblock %}
+{%block script%} 
+<script>
+    dispalyText(document.getElementById('h1'),"can you beat me?");
+    setTimeout(() => {
+        document.getElementById('board').style.pointerEvents = "all";
+    }, 1700);
+    var board = ['','','','','','','','',''];
+    var current = 'x';
+    const win_options = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+    var gameend = false;
+    function playCube(location, player){
+        if (board[location] === '' && !gameend && player === current){ 
+            document.getElementById(location).innerHTML = current;
+            board[location] = current;
+            checkWin();
+            setTimeout(() => {
+                if(current === 'o' && !checkFullBoard()){
+                    doComp();
+                }  
+            }, 350);
+            current = current === 'x' ? 'o':'x';
+
+        }
+    }
+    function checkWin(){
+        for (let index = 0; index < 8; index++){
+            var check = win_options[index];
+            if(board[check[0]] === board[check[1]] && board[check[1]] === board[check[2]] && board[check[2]] !== ''){
+                gameend = true;
+                if(current === 'x')
+                    won();
+                else
+                    lost();
+                break;
+            }               
+        }
+    }
+    function checkFullBoard(){
+        if(gameend)
+            return false;
+        for (let index = 0; index < 9; index++){
+            if(board[index] === ''){   
+                return false;
+            }
+        }
+        gameend = true;
+        reset();
+        return true;
+    }
+    function doComp(){
+        for (let index = 0; index < 9; index++){
+            if(board[index] === ''){   
+                playCube(index, 'o');
+                break;
+            }
+        }
+
+    }
+    function lost(){
+        document.getElementById('situ').style.display = "inline";
+        dispalyText(document.getElementById('situ-text'), "no way you lost")
+        setInterval(() => {
+            document.getElementById('situ').style.display = "none";
+            reset();
+        },2000)
+    }
+    function won(){
+        setTimeout(() => {
+            document.getElementById('board').style.display = "none";
+            document.getElementById('situ').style.display = "inline";
+            dispalyText(document.getElementById('situ-text'), "shit you did")
+            setTimeout(() => {
+                const b = document.getElementById('move-on');
+                b.style.display = "inline"
+            }, 1500);
+        }, 1500);
+    }
+
+    function reset(){
+        board = ['','','','','','','','',''];
+        current = 'x';
+        gameend = false;
+        
+        for (let index = 0; index < 9; index++){
+            document.getElementById(index).innerHTML = null;
+        }
+    }
+
+    function dispalyText(h, text){
+        h.innerHTML = "";
+        var index = 0;
+        setInterval(() => {
+        h.innerHTML = h.innerHTML + text.charAt(index);
+        index ++;
+    }, 100);
+    }
+</script>
+{% endblock %}

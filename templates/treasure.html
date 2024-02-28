@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{%block content%} 
+<h1 id="fir" style="font-size: 50px;"></h1>
+<h1 id="h1" style="white-space: pre; font-family: 'Courier New', Courier, monospace"></h1>
+    <div class="center" id="move-on" style="display: none;">
+        <h1 style="font-size: 45px; color: white;">Password: Akuna Matata</h1>
+    </div>
+    <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" id="never-gonna" style="display: none;"></a>
+    <div class="center">
+        <h1 id="count-down" style="white-space: pre; font-family: 'Courier New', Courier, monospace;"></h1>
+    </div>
+    {% endblock %}
+
+{%block script%} 
+<script>
+    dispalyText(document.getElementById('fir'), "Take a Pic and go down bc someone is waiting for you...");
+    setTimeout(() => {
+        const b = document.getElementById('move-on');
+        b.style.display = "block"
+    }, 1500);
+    setTimeout(() => {
+        var time = 10;
+        const b = document.getElementById('count-down');
+        setInterval(() => {
+            b.innerHTML = time;
+            time --;
+            if(time === -1)
+                document.getElementById('never-gonna').click();
+        }, 1000);
+    }, 7000);
+    function dispalyText(h, text){
+        h.innerHTML = "";
+        var index = 0;
+        setInterval(() => {
+        h.innerHTML = h.innerHTML + text.charAt(index);
+        index ++;
+    }, 100);
+    }
+    play();
+</script>
+{% endblock %}

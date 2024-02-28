@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+
+{%block content%} 
+<h1 id="h1" style="font-size: 50px;"></h1>
+        <div id="container" class="gametwo-container">
+            <div class="gametwo-inner">
+                <img class="gametwo-image" src="{{url_for('static',filename='images/image1.png')}}">
+                <div class="gametwo-radio-container">
+                    <div>
+                        <input type="radio" name="rdimage2" value="2021" id="1image1">
+                        <label><b>2021</b></label> 
+                    </div>
+                    <div>
+                        <input type="radio" name="rdimage2" value="2022" id="2image1">
+                        <label><b>2022</b></label>                        
+                    </div>
+                    <div>
+                        <input type="radio" name="rdimage2" value="2023" id="3image1">
+                        <label><b>2023</b></label>     
+                    </div>
+
+                </div>
+            </div>
+            <div class="gametwo-inner">
+                <img class="gametwo-image" src="{{url_for('static',filename='images/image2.png')}}">
+                <div class="gametwo-radio-container">
+                    <div>
+                        <input type="radio" name="rdimage3" value="2021" id="1image2">
+                        <label><b>2021</b></label>
+                    </div>
+                    <div>
+                        <input type="radio" name="rdimage3" value="2022" id="2image2">
+                        <label><b>2022</b></label>
+                    </div>
+                    <div>
+                        <input type="radio" name="rdimage3" value="2023" id="3image2">
+                        <label><b>2023</b></label>
+                    </div>
+                </div>
+            </div>
+            <div class="gametwo-inner">
+                <img class="gametwo-image" src="{{url_for('static',filename='images/image3.png')}}">
+                <div class="gametwo-radio-container">
+                    <div>
+                        <input type="radio" name="rdimage1" value="2021" id="1image3">
+                        <label><b>2021</b></label>
+                    </div>
+                    <div>
+                        <input type="radio" name="rdimage1" value="2022" id="2image3">
+                        <label><b>2022</b></label>
+                    </div>
+                    <div>
+                        <input type="radio" name="rdimage1" value="2023" id="3image3">
+                        <label><b>2023</b></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="submit" class="center" style="margin-top: 5%;">
+            <input id="submit" type="submit" value="submit"  onclick="submit()"/>
+        </div>
+        <div id="situ" class="center" style="display: none; color:peru;">
+            <h4 id="situ-text">nicely done</h4>
+        </div>
+        <div class="center" id="move-on" style="display: none;">
+            <form action="/tk_opener_first/">
+                <input type="submit" value="move on"/>
+            </form>
+        </div>
+{% endblock %}
+{%block script%} 
+<script>
+    dispalyText(document.getElementById('h1'), "Match the photo to the date");
+    const image1_answer = 2023;
+    const image2_answer = 2021;
+    const image3_answer = 2022;
+    var gameover = false;
+    function submit(){
+        if(gameover)
+        return;
+        let image1 = getImage1Check();
+        let image2 = getImage2Check();
+        let image3 = getImage3Check();
+        if(image1.value == image1_answer && image2.value == image2_answer && image3.value == image3_answer){
+            document.getElementById('situ').style.display = 'inline';
+            document.getElementById('situ-text').innerHTML = "good job!";
+            gameover = true;
+            setTimeout(() => {
+                document.getElementById('container').style.display = 'none';
+                document.getElementById('situ').style.display = 'none';
+                document.getElementById('submit').style.display = 'none';
+                const b = document.getElementById('move-on');
+                b.style.display = "inline"
+            }, 1500);
+        }
+        else{
+            document.getElementById('situ').style.display = 'inline';
+            document.getElementById('situ-text').innerHTML = "try again";
+            image1.checked = false;
+            image2.checked = false;
+            image3.checked = false;
+        }
+
+    }
+    function getImage1Check(){
+        let a = document.getElementById('1image1');
+        let b = document.getElementById('2image1');
+        let c = document.getElementById('3image1');
+        if(a.checked)
+            return a;
+        if(b.checked)
+            return b;
+        if(c.checked)
+            return c;
+    } 
+    function getImage2Check(){
+        let a = document.getElementById('1image2');
+        let b = document.getElementById('2image2');
+        let c = document.getElementById('3image2');
+        if(a.checked)
+            return a;
+        if(b.checked)
+            return b;
+        if(c.checked)
+            return c;
+    }
+    function getImage3Check(){
+        let a = document.getElementById('1image3');
+        let b = document.getElementById('2image3');
+        let c = document.getElementById('3image3');
+        if(a.checked)
+            return a;
+        if(b.checked)
+            return b;
+        if(c.checked)
+            return c;
+    }
+    function dispalyText(h, text){
+        var index = 0;
+        setInterval(() => {
+        h.innerHTML = h.innerHTML + text.charAt(index);
+        index ++;
+    }, 100);
+    }
+</script>
+{% endblock %}

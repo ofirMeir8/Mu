@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{%block content%} 
+<h1 id="h1" style="white-space: pre; font-family: 'Courier New', Courier, monospace"></h1>
+    <div class="center" id="move-on" style="display: none;">
+      <form action="/name/">
+           <input type="submit" value="move on"/>
+    </form>
+</div>
+{% endblock %}
+{%block script%} 
+<script>
+    dispalyText(document.getElementById('h1'), "Hello, Welcome to your \n PROM OFFER!")
+    setTimeout(() => {
+        const b = document.getElementById('move-on');
+        b.style.display = "block"
+    }, 6000);
+    function dispalyText(h, text){
+        var index = 0;
+        setInterval(() => {
+        h.innerHTML = h.innerHTML + text.charAt(index);
+        index ++;
+    }, 100);
+    }
+</script>
+{% endblock %}

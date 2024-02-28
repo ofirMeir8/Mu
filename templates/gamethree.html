@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{%block content%} 
+<div class="center">
+    <h1 id="fir"></h1>
+    <h3 id="thr" style="display: none; color: peru;"></h1>
+    <div id="sec">
+        <h4 style="color: peru;">password: </h4>
+        <input type="text" id="input" placeholder="password" style="text-align: center;"/>
+        <br>
+        <br>
+        <input  type="submit" onclick="checkInput()" value="submit"/>
+    </div>
+    <form action="/tk_opener_second/" style="display: none;">
+        <input id="b" type="submit" value="ss"/>
+    </form>
+</div>
+{% endblock %}
+{%block script%} 
+<script>
+    dispalyText(document.getElementById('fir'), "Enter Password?");
+    function checkInput(){
+        let a = document.getElementById('input').value;
+        if (a === ""){
+            document.getElementById('sec').style.display = "none";
+            dispalyText(document.getElementById('fir'), "SIKE");
+
+            setTimeout(() => {
+                document.getElementById('thr').style.display = "inline";
+                dispalyText(document.getElementById('thr'), "You Thought it will be that easy?");
+                setTimeout(() => {
+                    document.getElementById('b').click();
+                }, 3900);
+            }, 1000);
+        }
+    }
+
+    function dispalyText(h, text){
+        h.innerHTML = "";
+        var index = 0;
+        setInterval(() => {
+        h.innerHTML = h.innerHTML + text.charAt(index);
+        index ++;
+    }, 100);
+    }
+    play();
+</script>
+{% endblock %}

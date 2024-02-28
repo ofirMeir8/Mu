@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css')}}">
+    </head>
+    <body>
+        <div class="topnav">
+            <label class="l">prom</label>
+            <label id="elapsed-time"></label>
+            <label style="float: right;"><audio id="audio" autoplay controls src="" onended="playNext()" style="height: 30px;"></audio></label>
+        </div>
+        {%block content%} {% endblock %}
+    </body>
+    {%block script%} {% endblock %}
+    <script>
+        document.getElementById("audio").currentTime = localStorage.getItem("audio") ? parseFloat(localStorage.getItem("audio")) + 0.28: 0;
+        updateElapsedTime();
+        function formatTime(seconds) {
+            var hours = Math.floor(seconds / 3600);
+            var minutes = Math.floor((seconds % 3600) / 60);
+            var remainingSeconds = seconds % 60;
+
+            if (hours < 10) hours = "0" + hours;
+            if (minutes < 10) minutes = "0" + minutes;
+            if (remainingSeconds < 10) remainingSeconds = "0" + remainingSeconds;
+
+            return hours + ":" + minutes + ":" + remainingSeconds;
+        }
+
+        function updateElapsedTime() {
+            doIt()
+            setInterval(function() {
+                doIt()
+            }, 1000);
+        } 
+
+        
+        function doIt(){
+            var elapsedTimeElement = document.getElementById("elapsed-time");
+            var startTime = localStorage.getItem("startTime") ? parseInt(localStorage.getItem("startTime")) : new Date().getTime();
+
+            var currentTime = new Date().getTime();
+            var elapsedTime = Math.floor((currentTime - startTime) / 1000);
+            elapsedTimeElement.innerHTML = formatTime(elapsedTime);
+            localStorage.setItem("startTime", startTime);
+
+            var song = document.getElementById("audio");
+            localStorage.setItem("audio", song.currentTime);
+        }  
+
+        var songs = ["{{url_for('static',filename='nanana.mp3')}}", "{{url_for('static',filename='stay.mp3')}}"];
+        var currentIndex = localStorage.getItem("currentIndex")? parseInt(localStorage.getItem("currentIndex")): 0;
+
+        
+        function playNext() {
+            currentIndex++;
+            if(currentIndex === 2){
+                currentIndex = 0;
+            }
+            localStorage.setItem("currentIndex", currentIndex);
+            play();
+        }   
+        function play() {
+            var audio = document.getElementById("audio");
+            audio.src = songs[currentIndex];
+            audio.play();
+            localStorage.setItem("currentIndex", currentIndex);
+        }
+        play();
+
+    </script>
+</html>

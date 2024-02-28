@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{%block content%} 
+<h1 id="fir"></h1>
+<h1 id="h1" style="white-space: pre; font-family: 'Courier New', Courier, monospace"></h1>
+    <div class="center" id="move-on" style="display: none;">
+      <form action="/treasure/">
+           <input type="submit" value="move on"/>
+    </form>
+</div>
+{% endblock %}
+
+{%block script%} 
+<script>
+    
+    dispalyText(document.getElementById('fir'), "Congrats! You made it to the end!");
+    setTimeout(() => {
+        const b = document.getElementById('move-on');
+        b.style.display = "block"
+    }, 3800);
+    function dispalyText(h, text){
+        h.innerHTML = "";
+        var index = 0;
+        setInterval(() => {
+        h.innerHTML = h.innerHTML + text.charAt(index);
+        index ++;
+    }, 100);
+    }
+</script>
+{% endblock %}
